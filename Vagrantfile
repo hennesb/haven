@@ -24,8 +24,11 @@ Vagrant.configure("2") do |config|
     appDeployer.vm.provision "shell", inline: "echo vagrant >vagrant.password.file"
     appDeployer.vm.provision "shell", inline: "ssh-keyscan 172.28.128.4 >>.ssh/known_hosts"
     appDeployer.vm.provision "shell", inline: "sshpass -v -f vagrant.password.file ssh-copy-id -i .ssh/id_rsa.pub  -o StrictHostKeyChecking=no vagrant@172.28.128.4" 
-    appDeployer.vm.provision "shell", inline: "sudo mkdir /tmp/cis"
-    appDeployer.vm.provision "shell", inline: "sudo cd /tmp/cis"
+    appDeployer.vm.provision "shell", inline: "sudo mkdir /home/vagrant/cis"
+    appDeployer.vm.provision "shell", inline: "sudo cp /vagrant/hosts /home/vagrant/cis"
+    appDeployer.vm.provision "shell", inline: "sudo cp /vagrant/requirements.yml /home/vagrant/cis"
+    appDeployer.vm.provision "shell", inline: "sudo cp /vagrant/secure_build.yml /home/vagrant/cis"
+    appDeployer.vm.provision "shell", inline: "sudo ansible-galaxy install -p /home/vagrant/cis/roles -r /home/vagrant/cis/requirements.yml" 
   end
 
 
